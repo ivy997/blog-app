@@ -14,6 +14,7 @@ public class User {
     private String resetPasswordToken;
     private Set<Role> roles;
     private Set<Article> articles;
+    private Set<Comment> comments;
 
     public User() { }
 
@@ -24,6 +25,7 @@ public class User {
 
         this.roles = new HashSet<>();
         this.articles = new HashSet<>();
+        this.comments = new HashSet<>();
     }
 
     @Id
@@ -89,6 +91,15 @@ public class User {
 
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
+    }
+
+    @OneToMany(mappedBy = "author")
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public void addRole(Role role) {

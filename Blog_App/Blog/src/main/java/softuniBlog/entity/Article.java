@@ -13,6 +13,7 @@ public class Article {
     private User author;
     private Category category;
     private Set<Tag> tags;
+    private Set<Comment> comments;
 
     public Article() { }
 
@@ -23,6 +24,7 @@ public class Article {
         this.category = category;
 
         this.tags = tags;
+        this.comments = new HashSet<>();
     }
 
     @Id
@@ -81,6 +83,15 @@ public class Article {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    @OneToMany(mappedBy = "article")
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Transient
