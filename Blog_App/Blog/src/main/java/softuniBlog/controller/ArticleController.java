@@ -8,17 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import softuniBlog.bindingModel.ArticleBindingModel;
-import softuniBlog.entity.Article;
-import softuniBlog.entity.Category;
-import softuniBlog.entity.Tag;
-import softuniBlog.entity.User;
+import softuniBlog.entity.*;
 import softuniBlog.repository.ArticleRepository;
 import softuniBlog.repository.CategoryRepository;
 import softuniBlog.repository.TagRepository;
 import softuniBlog.repository.UserRepository;
+import softuniBlog.service.CommentService;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -27,15 +24,18 @@ public class ArticleController {
     private UserRepository userRepository;
     private CategoryRepository categoryRepository;
     private TagRepository tagRepository;
+    private CommentService commentService;
 
     public ArticleController(ArticleRepository articleRepository,
                              UserRepository userRepository,
                              CategoryRepository categoryRepository,
-                             TagRepository tagRepository) {
+                             TagRepository tagRepository,
+                             CommentService commentService) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
+        this.commentService = commentService;
     }
 
     @GetMapping("/article/create")
@@ -90,7 +90,14 @@ public class ArticleController {
 
         Article article = this.articleRepository.getById(id);
 
+        // Set<Comment> comments = this.commentService.listComments(article);
+
+        List<Comment> comments = this.commentService.listComments(article).stream()
+                .sorted(Comparator.comparingInt(Comment::getId).reversed())
+                .collect(Collectors.toList());
+
         model.addAttribute("article", article);
+        model.addAttribute("comments", comments);
         model.addAttribute("view", "article/details");
 
         return "base-layout";

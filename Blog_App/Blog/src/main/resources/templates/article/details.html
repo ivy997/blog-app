@@ -28,5 +28,70 @@
         </article>
       </div>
     </div>
+
+    <div class="row">
+      <div class="container">
+        <form class="form-horizontal" th:action="@{/article/{id}/comment(id = ${article.getId()})}" method="POST">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="page-title" th:text="${user.getFullName()}"></h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-1">
+            <div class="thumbnail">
+              <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-body" id="comment">
+                <textarea class="form-control" cols="15" id="commentInput" placeholder="Join the conversation.." name="content"></textarea>
+              </div>
+              <div class="panel-heading comment-action">
+                <div class="pull-right" id="comment">
+                  <input type="submit" class="btn btn-default" id="addNewCommentBtn" value="Submit"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <th:block th:each="comment : ${comments}">
+        <div class="col-md-12">
+          <comment>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <h4 th:text="${comment.getAuthor().getFullName()}"></h4>
+                <span class="page-title" th:text="${comment.createdAt}"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-1">
+                <div class="thumbnail">
+                  <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="panel panel-default">
+
+                  <div class="panel-body" id="comment">
+                    <textarea class="form-control" cols="15" th:text="${comment.content}" disabled="disabled"></textarea>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </comment>
+        </div>
+      </th:block>
+    </div>
   </div>
 </main>
